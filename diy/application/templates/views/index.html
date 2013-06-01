@@ -1,70 +1,83 @@
-{% extends "layout.html" %}
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            background: black;
+            color: #bbb;
+            padding: 5px;
+            font-family: consolas, monaco, Courier New, Courier New, monospace;
+            font-size: 12px;
+        }
 
-{% block title %}Index{% endblock %}
+        .output {
+            padding-left: 20px;
+            display: inline-block;
+        }
 
-{% block head %}
-{{ super() }}
-{#见下一个注释
-<link rel="stylesheet" href="{{ url_for('static', filename='css/gh-fork-ribbon.css') }}">
-#}
-{% endblock %}
+        .green {
+            color: #0f0;
+        }
 
-{% block style %}
-{{ super() }}
-//.metrouicss .page-region-content * {
-//    width: auto; white-space:nowrap; text-overflow:ellipsis; -o-text-overflow:ellipsis; overflow: hidden;
-//}
+        #music {
+            position: absolute;
+            top: -30px;
+        }
 
-.metrouicss #page1 a{
-width: auto; white-space:nowrap; text-overflow:ellipsis; -o-text-overflow:ellipsis; overflow: hidden;
-clear: both; /* 清除左右浮动 */
-width: 100px; /* 必须定义宽度 */
-word-break: break-word; /* 文本行的任意字内断开 */
-word-wrap: break-word; /* IE */
-white-space: -moz-pre-wrap; /* Mozilla */
-white-space: -hp-pre-wrap; /* HP printers */
-white-space: -o-pre-wrap; /* Opera 7 */
-white-space: -pre-wrap; /* Opera 4-6 */
-white-space: pre; /* CSS2 */
-white-space: pre-wrap; /* CSS 2.1 */
-white-space: pre-line; /* CSS 3 (and 2.1 as well, actually) */
-}
+        #overlay img {
+            position: fixed;
+            width: 600px;
+            bottom: 200px;
+            left: 50%;
+            margin: 0 0 0 -300px;
+        }
 
-.metrouicss #editor {
-position: absolute;
-//top: 0;
-left: 0;
-right: 0;
-bottom: 0;
-height: 500px;
-}
+        #backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            opacity: .9;
+        }
 
-.metrouicss #editor *{
-font-family: Monospace
-}
+        table {
+            font-size: 12px;
+            border: 0;
+            cell-padding: 0;
+            cell-spacing: 0;
+            margin: 0;
+            padding: 0;
+        }
 
-.metrouicss #page2 {
-height: 500px;
-text-overflow: 0;
-}
-{% endblock %}
+        td {
+            cell-padding: 0;
+            cell-spacing: 0;
+            margin: 0;
+            padding: 0;
+            padding-left: 15px;
+        }
 
-{% block header %}
-<p>Hello Hackday!</p>
-{% endblock %}
+        td.size {
+            text-align: right;
+        }
+    </style>
 
-{% block sidebar %}
-{% endblock %}
+    <title>kido - a shell for web.</title>
 
-{% block body %}
-{% endblock %}
+    <script src="/scripts/jquery-1.7.1.min.js" type="text/javascript" language="javascript"></script>
 
-{% block js %}
-{{ super() }}
-<script type="text/javascript" src="{{ url_for('static', filename='js/views/loading.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='Metro-UI-CSS/javascript/pagecontrol.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='js/project/rssRead.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='js/views/tog_left_bar.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='js/views/clip.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='Metro-UI-CSS/javascript/accordion.js') }}"></script>
-{% endblock %}
+    <script src="/scripts/main.js" type="text/javascript" language="javascript"></script>
+    <script src="/scripts/terminal.js" type="text/javascript" language="javascript"></script>
+    <script src="/scripts/keys.js" type="text/javascript" language="javascript"></script>
+    <script src="/scripts/http.js" type="text/javascript" language="javascript"></script>
+    <script src="/scripts/commands.js" type="text/javascript" language="javascript"></script>
+
+</head>
+
+<body>
+    <div id='container'></div>
+</body>
+
+</html>

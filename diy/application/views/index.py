@@ -13,3 +13,11 @@ if __name__ != "__main__":
 @app.route("/")
 def index(name = None):
     return render_template('views/index.html')
+
+@app.route("/scripts/<path:name>")
+def scripts(name):
+    return open('/home/atupal/src/github/kido/diy/application/static/scripts/' + name, 'r').read()
+
+@app.route("/styles/<path:name>")
+def styles(name):
+    return open('/home/atupal/src/github/kido/diy/application/static/styles/' + name, 'r').read()
