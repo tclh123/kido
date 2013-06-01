@@ -30,4 +30,11 @@ def styles(name):
 @app.route("/styles/<path:name>")
 def styles(name):
     return open('./application/static/styles/' + name, 'r').read()
+<<<<<<< HEAD
 >>>>>>> dfa3fa431d1a7a0ee26f73f7f4cc7a52ab26eef1
+=======
+
+@app.route("/static/<path:name>")
+def static(name):
+    return open('./application/static/' + name, 'r').read()
+>>>>>>> e5b6447b6348adf8992fb700036aca7f499928b7

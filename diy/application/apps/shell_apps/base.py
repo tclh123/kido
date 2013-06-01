@@ -20,9 +20,11 @@ def cmd():
         ret = {"result":"invalid method: get!"}
         return json.dumps(ret)
     elif request.method == 'POST':
-        app_name = request.form.get('name')
-        cmd = request.form.get('cmd')
-        param = request.form.get('args[]')
+        all_args = request.form.get('json')
+        all_args = json.loads(all_args)
+        app_name = all_args.get('name')
+        cmd = all_args.get('cmd')
+        param = json.dumps(all_args.get('args'))
         return eval(app_name + "( cmd = '" + str(cmd) + "' , param = '" + str(param) + "')")
 
 tab = "&nbsp;"  * 4
@@ -40,7 +42,7 @@ def ls(cmd = None, param = None):
     return json.dumps(ret)
 
 def weibo(cmd = None, param = None):
-    if cmd == "None" and param == "None":
+    if cmd == "None" and param == "[]":
         ret = ("sendweibo:" + "</br>"
                 + tab
                 + "explain: send a weibo message!"  + "</br>"
@@ -62,10 +64,21 @@ def weibo(cmd = None, param = None):
         return json.dumps(ret)
     elif cmd == "getweibo":
         with open("./application/data/weibo_token.json", 'r') as fi:
+            param = json.loads(param)
+            page = "1"
+            count = "20"
+            if len(param) == 1:
+                page = param[0]
+            elif len(param) == 2:
+                page = param[0]
+                count = param[1]
+
             token = json.load(fi)
             url = 'https://api.weibo.com/2/statuses/friends_timeline.json'
             access_token = token[0]['access_token']
             data = "?access_token=" + access_token
+            data += "&page=" + page
+            data += "&count=" + count
             url += data
             ret = urllib2.urlopen(url)
             ret = json.load(ret)
@@ -85,7 +98,7 @@ def weibo(cmd = None, param = None):
             url = 'https://api.weibo.com/2/statuses/update.json'
             access_token = token[0]['access_token']
             data = {
-                    "status": str(param),
+                    "status": str(param).strip('[').strip(']'),
                     "access_token" : access_token,
                     }
             requests.post(url, data = data)
@@ -110,8 +123,7 @@ def weibo(cmd = None, param = None):
 
 
 def doubanfm(cmd = None, param = None):
-    print param
-    if cmd == "None" and param == "None":
+    if cmd == "None" and param == "[]":
         chanel =  (
                 "explain: " + "</br>"
                 + tab + "调用豆瓣fm播放音乐" + "</br>"
@@ -152,7 +164,6 @@ def doubanfm(cmd = None, param = None):
                 }
         return json.dumps(ret)
     elif  cmd is not None:
-        print cmd
         url = 'http://douban.fm/j/mine/playlist?channel=' + cmd
         req = requests.get(url).content
         req = json.loads(req)
@@ -161,7 +172,7 @@ def doubanfm(cmd = None, param = None):
 
         content = ('<audio controls>' +
           '<source src="horse.ogg" type="audio/ogg">'+
-            '<source src="'+content+'" type="audio/mpeg">'+
+            '<source src="'+'/static/test.mp3'+'" type="audio/mpeg">'+
               'Your browser does not support the audio tag.'+
               '</audio>'
                 + req.get('song')[0].get('title') + "</br>")
