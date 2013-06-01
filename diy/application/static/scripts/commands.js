@@ -29,8 +29,8 @@
 //                args : []
 //            };
             var postjson = JSON.stringify(commandData);
-            http.post(context.urlpost, postjson, function(data) {
-                data = JSON.parse(data)
+            http.post(context.urlpost, { json:postjson }, function(data) {
+                data = JSON.parse(data);
                 if(data.action == 'output') {
                     if(data.type == 'html') {
                         var output = data.data;
@@ -45,11 +45,11 @@
                         // TODO: 打开 jsondata.url 小窗口，进行授权
                         var token = 'token';
                         // 获取 token 后， 再向服务器post一次     //!!
-                        http.post(context.urlpost, JSON.stringify({
+                        http.post(context.urlpost, { json:JSON.stringify({
                             name:commandData.name,
                             cmd:jsondata.cmd,
                             args:[token]
-                        }), function() {
+                        }) }, function() {
                             if(data.action == 'output') {
                                 if(data.type == 'html') {
                                     var output = data.data;
