@@ -2,6 +2,7 @@
 
 from application import app
 from flask import request
+from flask import session
 import json
 import urllib2
 import requests
@@ -17,6 +18,7 @@ def test():
 
 @app.route("/post", methods = ["POST"])
 def cmd():
+#    value = session['key']
     if request.method == 'GET':
         ret = {"result":"invalid method: get!"}
         return json.dumps(ret)
@@ -206,7 +208,7 @@ def doubanfm(cmd = None, param = None):
         #verify_code = raw_input()
         #D.verify_code = verify_code
         #D.login()
-        D.get_list()
+#        D.get_list()
     elif cmd == "login2":
         param = json.loads(param)
         D = dbfm.Doubanfm()
