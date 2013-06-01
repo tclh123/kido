@@ -10,7 +10,7 @@
     if (!window.kido)                   // 靠 window 来共享全局 kido 对象
         window.kido = {};
 
-    kido.terminal = function ($container, context) {
+    kido.terminal = function ($container, http, context) {
         var $currentConsoleLine;
 //        var currentPath = '';
 //        var currentFolder = '';
@@ -25,7 +25,7 @@
 
         ///// commands !!
         var runningCommand = false;
-//        var commands = new skycmd.commands($container, datamodel, context);
+        var commands = new kido.commands($container, http, context);
 
         init();
 
@@ -186,27 +186,16 @@
 
                     // TODO
 
-//                    commands.run($output, text, function () {
-//                        if (runningCommand) {
-//                            runningCommand = false;
-//                            newCommandLine();
-//                            $(document).scrollTop($(document).height());
-//                        }
-//                    });
-
-
-                    // do nothing
-                    if (runningCommand) {
-                        runningCommand = false;
-                        newCommandLine();
-                        $(document).scrollTop($(document).height());
-                    }
-
-                    // HTTP POST 命令 到 后端
+                    commands.run($output, text, function () {
+                        if (runningCommand) {
+                            runningCommand = false;
+                            newCommandLine();
+                            $(document).scrollTop($(document).height());
+                        }
+                    });
 
 
                     $(document).scrollTop($(document).height());
-
                     // 维护命令历史
                     commandHistory.push(text);
                     commandCount = commandHistory.length;
@@ -224,7 +213,7 @@
 //            matches = [];
         }
 
-        // echo  - 输出信息，外部调用
+        // echo  - 输出信息，外部调用    // 更改当前行的信息
 //        function echoOutput(text) {
 //            text = '<div class="output">' + text + '</div><br />';
 //            echo(text);

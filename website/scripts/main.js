@@ -14,9 +14,12 @@ $(document).ready(function () {
     $('#container').text('loading...');
 
     var context = {
+        urlpost : '/post'
     };
 
-    var terminal = new kido.terminal($('#container'), context);
+    var http = new kido.http(context);
+
+    var terminal = new kido.terminal($('#container'), http, context);
     $('#container').focus();
 
 });
