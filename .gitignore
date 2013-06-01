@@ -10,3 +10,5 @@ reference/*
 
 # 绝对路径。。
 diy/application/views/index.py
+
+*~
