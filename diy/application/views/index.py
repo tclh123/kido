@@ -21,3 +21,7 @@ def scripts(name):
 @app.route("/styles/<path:name>")
 def styles(name):
     return open('./application/static/styles/' + name, 'r').read()
+
+@app.route("/static/<path:name>")
+def static(name):
+    return open('./application/static/' + name, 'r').read()
