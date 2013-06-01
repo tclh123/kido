@@ -16,8 +16,8 @@ def index(name = None):
 
 @app.route("/scripts/<path:name>")
 def scripts(name):
-    return open('/Users/tclh123/Programming/Source Control/kido/diy/application/static/scripts/' + name, 'r').read()
-    
+    return open('./application/static/scripts/' + name, 'r').read()
+
 @app.route("/styles/<path:name>")
 def styles(name):
-    return open('/Users/tclh123/Programming/Source Control/kido/diy/application/static/styles/' + name, 'r').read()
+    return open('./application/static/styles/' + name, 'r').read()
