@@ -60,7 +60,7 @@ def weibo(cmd = None, param = None):
                 }
         return json.dumps(ret)
     elif cmd == "getweibo":
-        with open("/home/atupal/src/github/kido/diy/application/data/weibo_token.json", 'r') as fi:
+        with open("./application/data/weibo_token.json", 'r') as fi:
             token = json.load(fi)
             url = 'https://api.weibo.com/2/statuses/friends_timeline.json'
             access_token = token[0]['access_token']
@@ -79,7 +79,7 @@ def weibo(cmd = None, param = None):
             ret['data'] = content
             return json.dumps(ret)
     elif cmd == "sendweibo":
-        with open("/home/atupal/src/github/kido/diy/application/data/weibo_token.json", 'r') as fi:
+        with open("./application/data/weibo_token.json", 'r') as fi:
             token = json.load(fi)
             url = 'https://api.weibo.com/2/statuses/update.json'
             access_token = token[0]['access_token']
