@@ -2,6 +2,8 @@
 
 *.pyc
 
+diy/.idea/*
+diy/application/.idea/*
 website/.idea/*
 
 reference/*

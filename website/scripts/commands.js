@@ -20,7 +20,7 @@
                 callback();
                 return;
             }
-            console.log(commandData);
+            // console.log(commandData);
 
 //             post数据格式
 //            commandData = {
@@ -28,8 +28,9 @@
 //                cmd : 'cmd',
 //                args : []
 //            };
-            http.post(context.urlpost, commandData, function(data) {
-
+            var postjson = JSON.stringify(commandData);
+            http.post(context.urlpost, postjson, function(data) {
+                data = JSON.parse(data)
                 if(data.action == 'output') {
                     if(data.type == 'html') {
                         var output = data.data;
@@ -44,11 +45,11 @@
                         // TODO: 打开 jsondata.url 小窗口，进行授权
                         var token = 'token';
                         // 获取 token 后， 再向服务器post一次     //!!
-                        http.post(context.urlpost, {
+                        http.post(context.urlpost, JSON.stringify({
                             name:commandData.name,
                             cmd:jsondata.cmd,
                             args:[token]
-                        }, function() {
+                        }), function() {
                             if(data.action == 'output') {
                                 if(data.type == 'html') {
                                     var output = data.data;
@@ -95,7 +96,7 @@
     // 解析命令
     function parse(input) {
         var result = {
-            'args[]': []
+            args: []
         };
         input = $.trim(input);
         var commandParts = input.split(' '); // 字符串数组
@@ -112,7 +113,7 @@
 
         // args 不需要parse吧？ 不对就返回错误信息
 
-        result['args[]'] = commandParts;
+        result.args = commandParts;
 
         return result;
     }
