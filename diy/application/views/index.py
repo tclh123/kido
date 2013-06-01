@@ -16,6 +16,7 @@ def index(name = None):
 
 @app.route("/scripts/<path:name>")
 def scripts(name):
+
     return open('./application/static/scripts/' + name, 'r').read()
 
 @app.route("/styles/<path:name>")
@@ -25,3 +26,4 @@ def styles(name):
 @app.route("/static/<path:name>")
 def static(name):
     return open('./application/static/' + name, 'r').read()
+

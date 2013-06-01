@@ -13,6 +13,32 @@
 
 .green {
     color: #0f0;
+    background: red;
+}
+
+.sky{
+    color: #FFFFFF;
+    background: #6699FF;
+}
+
+.forest{
+    color: green;
+    background: #006600;
+}
+
+.dream{
+    color: #0000FF;
+    background: #CC99FF;
+}
+
+.ubuntu{
+    color: #FFFFFF;
+    background: #330033;
+}
+
+.childhood{
+    color: #CC9999;
+    background: #FFFF99;
 }
 
 #music {

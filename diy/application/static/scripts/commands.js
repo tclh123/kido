@@ -133,16 +133,46 @@
             },
 
             // terminal style
-            'green': {
-                func: function () { color('green'); },
-                syntax: 'green'
+            'theam': {
+                func: function () { bd.className="theam"; },
+                syntax: 'theam'
             },
             'white': {
                 func: function () { color('white'); },
                 syntax: 'white'
             },
+	    
+            'sky': {
+                func: function () { bd.className="sky"; },
+                syntax: 'sky'
+            },
+
+            'dream': {
+                func: function () { bd.className="dream"; },
+                syntax: 'dream'
+            },
+
+
+            'childhood': {
+                func: function () { bd.className="childhood"; },
+                syntax: 'childhood'
+            },
+
+
+            'ubuntu': {
+                func: function () { bd.className="ubuntu"; },
+                syntax: 'ubuntu'
+            },
+
+
+            'forest': {
+                func: function () { bd.className="forest"; },
+                syntax: 'forest'
+            },
+
             'color': {
-                func: function () { $('body').toggleClass('green'); },
+                func: function () { bd.className="sky";},
+//$('body').toggleClass('sky'); },
                 syntax: 'color'
             }
         };
@@ -176,8 +206,9 @@
         function next() {
 
         }
-        function color(color) {
-            $('body').toggleClass('green', color == 'green');
+        function color(theam) {
+            //$('body').toggleClass('green', theam == 'green');
+	    $('body').className=theam;
         }
 
         function _play(src) {
