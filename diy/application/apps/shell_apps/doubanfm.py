@@ -27,6 +27,11 @@ class Doubanfm:
         content = urllib2.urlopen(url).read()
         return content
 
+    def get_fav_src(self):
+        url = 'http://douban.fm/j/mine/playlist?type=n&channel=-3&from=mainsite'
+        content = urllib2.urlopen(url).read()
+        return content
+
 
     def new_captcha(self):
         url = 'http://douban.fm/j/new_captcha'

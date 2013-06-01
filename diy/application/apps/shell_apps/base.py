@@ -6,6 +6,7 @@ import json
 import urllib2
 import requests
 import application.apps.shell_apps.doubanfm as dbfm
+from pyquery import PyQuery as pyq
 
 import sys
 reload(sys)
@@ -231,6 +232,18 @@ def doubanfm(cmd = None, param = None):
     elif cmd == 'get_list':
         D = dbfm.Doubanfm()
         content = D.get_list()
+        d = pyq(content)
+        p = d('.song_info')
+        content = str(p)
+        return json.dumps({
+            "action": "output",
+            "type": "html",
+            "data": content,
+            })
+
+    elif cmd == 'get_fav_src':
+        D = dbfm.Doubanfm()
+        content = D.get_fav_src()
         return json.dumps({
             "action": "output",
             "type": "html",
@@ -239,3 +252,19 @@ def doubanfm(cmd = None, param = None):
 
     else:
         return "sd"
+
+
+def renren(cmd = None, param = None):
+    fi = open('./application/data/renren_token.json', 'r')
+    token = json.load(fi)
+    fi.close()
+    if cmd == "getmes":
+        url = 'https://api.renren.com/restserver.do'
+        data = {
+                "v": "1.0",
+                "access_token": token[0].get("access_token"),
+                "method" : "feed.get",
+                "type":"",
+                }
+
+
