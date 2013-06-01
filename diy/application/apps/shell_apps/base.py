@@ -5,6 +5,7 @@ from flask import request
 import json
 import urllib2
 import requests
+import application.apps.shell_apps.doubanfm as dbfm
 
 import sys
 reload(sys)
@@ -156,6 +157,14 @@ def doubanfm(cmd = None, param = None):
                 + tab + "channel=67 公共兆赫【特辑】：东京事变MHZ" + "</br>"
                 + tab + "channel=52 公共兆赫【品牌】：乐混翻唱MHZ" + "</br>"
                 + tab + "channel=58 公共兆赫【品牌】：路虎揽胜运动MHZ" + "</br>"
+                + "login1:" + "</br>"
+                + tab + "获取登录的验证码" + "</br>"
+                + "login2:" + "</br>"
+                + tab + "登录豆瓣fm，3个参数依次为用户名，密码，验证码" + "</br>"
+                + "get_list" + "</br>"
+                + tab + "获取收藏的歌曲" + "</br>"
+                + "logout:" + "</br>"
+                + tab + "登出" + "</br>"
         )
         ret = {
                 "action": "output",
@@ -163,7 +172,7 @@ def doubanfm(cmd = None, param = None):
                 "data":chanel
                 }
         return json.dumps(ret)
-    elif  cmd is not None:
+    elif cmd.isdigit():
         url = 'http://douban.fm/j/mine/playlist?channel=' + cmd
         req = requests.get(url).content
         req = json.loads(req)
@@ -183,5 +192,50 @@ def doubanfm(cmd = None, param = None):
                 "data":content
                 }
         return json.dumps(ret)
+    elif cmd == "login1":
+        D = dbfm.Doubanfm()
+        D.new_captcha()
+        D.getimg()
+        content = '<img src="/static/verify_code.jpg" />'
+        ret = {
+                "action":"output",
+                "type": "html",
+                "data": content,
+                }
+        return json.dumps(ret)
+        #verify_code = raw_input()
+        #D.verify_code = verify_code
+        #D.login()
+        D.get_list()
+    elif cmd == "login2":
+        param = json.loads(param)
+        D = dbfm.Doubanfm()
+        D.username = param[0]
+        D.passwd = param[1]
+        D.verify_code = param[2]
+        D.login()
+        return json.dumps({
+            "action": "output",
+            "type": "html",
+            "data": "login success",
+            })
+    elif cmd == "logout":
+        D = dbfm.Doubanfm()
+        D.logout()
+        return json.dumps({
+            "action": "output",
+            "type": "html",
+            "data": "logout success",
+            })
+
+    elif cmd == 'get_list':
+        D = dbfm.Doubanfm()
+        content = D.get_list()
+        return json.dumps({
+            "action": "output",
+            "type": "html",
+            "data": content,
+            })
+
     else:
         return "sd"
