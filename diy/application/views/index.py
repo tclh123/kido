@@ -16,6 +16,7 @@ def index(name = None):
 
 @app.route("/scripts/<path:name>")
 def scripts(name):
+<<<<<<< HEAD
     #return open('/Users/tclh123/Programming/Source Control/kido/diy/application/static/scripts/' + name, 'r').read()
     return open('/home/lee/Documents/Projects/Web_Shell/kido/diy/application/static/scripts/' + name, 'r').read()
 
@@ -23,3 +24,10 @@ def scripts(name):
 def styles(name):
     #return open('/Users/tclh123/Programming/Source Control/kido/diy/application/static/styles/' + name, 'r').read()
     return open('/home/lee/Documents/Projects/Web_Shell/kido/diy/application/static/styles/' + name, 'r').read()
+=======
+    return open('./application/static/scripts/' + name, 'r').read()
+
+@app.route("/styles/<path:name>")
+def styles(name):
+    return open('./application/static/styles/' + name, 'r').read()
+>>>>>>> dfa3fa431d1a7a0ee26f73f7f4cc7a52ab26eef1
