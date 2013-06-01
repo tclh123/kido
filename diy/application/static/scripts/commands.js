@@ -20,8 +20,11 @@
                 callback();
                 return;
             }
-//            console.log(commandData);
 
+            //////////////
+            // 后端命令
+
+            immediateCallback = false;
 //             post数据格式
 //            commandData = {
 //                name : 'name',
@@ -39,30 +42,34 @@
                         var output = data.data;
                         $output.html(output);
                     }
-                } else if(data.action == 'needauth') {
-                    if(data.type == 'json') {
-                        var jsondata = data.data;
-                        // TODO: 打开 jsondata.url 小窗口，进行授权
-                        var token = 'token';
-                        // 获取 token 后， 再向服务器post一次     //!!
-                        http.post(context.urlpost, { json:JSON.stringify({
-                            name:commandData.name,
-                            cmd:jsondata.cmd,
-                            args:[token]
-                        }) }, function() {
-                            if(data.action == 'output') {
-                                if(data.type == 'html') {
-                                    var output = data.data;
-                                    $output.html(output);
-                                } else if(data.type == 'text') {     // 暂时没区别...
-                                    var output = data.data;
-                                    $output.html(output);
-                                }
-                            }
-                        });
-                    }
-                    //
                 }
+                // TODO
+//                else if(data.action == 'needauth') {
+//                    if(data.type == 'json') {
+//                        var jsondata = data.data;
+//                        // TODO: 打开 jsondata.url 小窗口，进行授权
+//                        var token = 'token';
+//                        // 获取 token 后， 再向服务器post一次     //!!
+//                        http.post(context.urlpost, { json:JSON.stringify({
+//                            name:commandData.name,
+//                            cmd:jsondata.cmd,
+//                            args:[token]
+//                        }) }, function() {
+//                            if(data.action == 'output') {
+//                                if(data.type == 'html') {
+//                                    var output = data.data;
+//                                    $output.html(output);
+//                                } else if(data.type == 'text') {     // 暂时没区别...
+//                                    var output = data.data;
+//                                    $output.html(output);
+//                                }
+//                            }
+//                        });
+//                    }
+//                    //
+//                }
+
+                callback(); // 新行，及 focus
             });
 
 //            var user = datamodel.getUser();
