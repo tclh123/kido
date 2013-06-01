@@ -70,7 +70,7 @@ def weibo(cmd = None, param = None):
             ret = json.load(ret)
             content = "<ul>"
             for w in ret.get('statuses'):
-                content += "<li>"  + w.get('text') + "</li>"  + "</p>" + "<li>" +w.get('user').get('screen_name') + "</li>"
+                content += "<li>"  + w.get('user').get('screen_name') + "</li>"  + "<li>" +w.get('text') + "</li>" + "</br>"
             content += "</ul>"
             ret = {}
 
