@@ -20,6 +20,7 @@
                 callback();
                 return;
             }
+            console.log(commandData);
 
 //             post数据格式
 //            commandData = {
@@ -94,7 +95,7 @@
     // 解析命令
     function parse(input) {
         var result = {
-            args: []
+            'args[]': []
         };
         input = $.trim(input);
         var commandParts = input.split(' '); // 字符串数组
@@ -111,7 +112,7 @@
 
         // args 不需要parse吧？ 不对就返回错误信息
 
-        result.args = commandParts;
+        result['args[]'] = commandParts;
 
         return result;
     }
