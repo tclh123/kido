@@ -1,0 +1,14 @@
+uWSGI==1.2.3
+Flask==0.8
+pymongo
+gevent
+gevent-websocket
+peewee
+mysql-python
+flask-peewee
+wtf-peewee
+wtforms
+markdown
+flask-markdown
+
+requests

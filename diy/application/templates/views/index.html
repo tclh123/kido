@@ -1,0 +1,70 @@
+{% extends "layout.html" %}
+
+{% block title %}Index{% endblock %}
+
+{% block head %}
+{{ super() }}
+{#见下一个注释
+<link rel="stylesheet" href="{{ url_for('static', filename='css/gh-fork-ribbon.css') }}">
+#}
+{% endblock %}
+
+{% block style %}
+{{ super() }}
+//.metrouicss .page-region-content * {
+//    width: auto; white-space:nowrap; text-overflow:ellipsis; -o-text-overflow:ellipsis; overflow: hidden;
+//}
+
+.metrouicss #page1 a{
+width: auto; white-space:nowrap; text-overflow:ellipsis; -o-text-overflow:ellipsis; overflow: hidden;
+clear: both; /* 清除左右浮动 */
+width: 100px; /* 必须定义宽度 */
+word-break: break-word; /* 文本行的任意字内断开 */
+word-wrap: break-word; /* IE */
+white-space: -moz-pre-wrap; /* Mozilla */
+white-space: -hp-pre-wrap; /* HP printers */
+white-space: -o-pre-wrap; /* Opera 7 */
+white-space: -pre-wrap; /* Opera 4-6 */
+white-space: pre; /* CSS2 */
+white-space: pre-wrap; /* CSS 2.1 */
+white-space: pre-line; /* CSS 3 (and 2.1 as well, actually) */
+}
+
+.metrouicss #editor {
+position: absolute;
+//top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+height: 500px;
+}
+
+.metrouicss #editor *{
+font-family: Monospace
+}
+
+.metrouicss #page2 {
+height: 500px;
+text-overflow: 0;
+}
+{% endblock %}
+
+{% block header %}
+<p>Hello Hackday!</p>
+{% endblock %}
+
+{% block sidebar %}
+{% endblock %}
+
+{% block body %}
+{% endblock %}
+
+{% block js %}
+{{ super() }}
+<script type="text/javascript" src="{{ url_for('static', filename='js/views/loading.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='Metro-UI-CSS/javascript/pagecontrol.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/project/rssRead.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/views/tog_left_bar.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/views/clip.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='Metro-UI-CSS/javascript/accordion.js') }}"></script>
+{% endblock %}
