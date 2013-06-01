@@ -97,9 +97,22 @@
             }
         };
 
-
+        // 弹出授权弹层：
+        function authLoad(){
+            context.wbapi.AuthDialog.show({
+                client_id : '2074065925',    //必选，appkey
+                redirect_uri : 'http://127.0.0.1:8888/callback',     //必选，授权后的回调地址，例如：http://apps.weibo.com/giftabc
+                height: 120,    //可选，默认距顶端120px
+                scope: "friendships_groups_read, friendships_groups_write"//可选，授权页scope参数
+            });
+        }
         // 前端命令
         var frontCmd = {
+
+            'test' : {
+                func: function() { authLoad(); }
+            },
+
             // basic
             'help': {
                 func: help,

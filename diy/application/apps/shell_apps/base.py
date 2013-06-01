@@ -1,8 +1,7 @@
 #coding=utf-8
 
 from application import app
-from flask import request
-from flask import session
+from flask import request, session, redirect
 import json
 import urllib2
 import requests
@@ -29,6 +28,13 @@ def cmd():
         cmd = all_args.get('cmd')
         param = json.dumps(all_args.get('args'))
         return eval(app_name + "( cmd = '" + str(cmd) + "' , param = '" + str(param) + "')")
+
+@app.route("/callback", methods = ["GET", "POST"])
+def callback():
+    return redirect("/")
+#    return "callback"
+
+###############
 
 tab = "&nbsp;"  * 4
 def ls(cmd = None, param = None):
