@@ -1,7 +1,7 @@
 #coding=utf-8
 
 from application import app
-from flask import request
+from flask import request, session, redirect
 import json
 import urllib2
 import requests
@@ -18,6 +18,7 @@ def test():
 
 @app.route("/post", methods = ["POST"])
 def cmd():
+#    value = session['key']
     if request.method == 'GET':
         ret = {"result":"invalid method: get!"}
         return json.dumps(ret)
@@ -28,6 +29,13 @@ def cmd():
         cmd = all_args.get('cmd')
         param = json.dumps(all_args.get('args'))
         return eval(app_name + "( cmd = '" + str(cmd) + "' , param = '" + str(param) + "')")
+
+@app.route("/callback", methods = ["GET", "POST"])
+def callback():
+    return redirect("/")
+#    return "callback"
+
+###############
 
 tab = "&nbsp;"  * 4
 def ls(cmd = None, param = None):
@@ -207,7 +215,7 @@ def doubanfm(cmd = None, param = None):
         #verify_code = raw_input()
         #D.verify_code = verify_code
         #D.login()
-        D.get_list()
+#        D.get_list()
     elif cmd == "login2":
         param = json.loads(param)
         D = dbfm.Doubanfm()

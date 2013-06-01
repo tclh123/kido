@@ -14,7 +14,8 @@ $(document).ready(function () {
     $('#container').text('loading...');
 
     var context = {
-        urlpost : '/post'
+        urlpost : '/post',
+        wbapi : App
     };
 
     var http = new kido.http(context);
