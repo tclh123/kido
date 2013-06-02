@@ -175,6 +175,7 @@ def weibo(cmd = None, param = None):
                 }
         return  json.dumps(ret)
 
+<<<<<<< HEAD
 
 
     #url = ('https://api.weibo.com/oauth2/authorize?client_id='+
@@ -185,6 +186,8 @@ def weibo(cmd = None, param = None):
             '1220535963' +
             '&response_type=code&redirect_uri=' +
             'http://atupal.org')
+=======
+>>>>>>> 0451b2bc38bc9bac07372c18c50191af92d944cf
     ret = {
             "action": "output",
             "type": "text",
@@ -282,7 +285,7 @@ def doubanfm(cmd = None, param = None):
         D = dbfm.Doubanfm()
         D.new_captcha()
         D.getimg()
-        content = '<img src="/static/verify_code.jpg" />'
+        content = '<img src="/data/verify_code.jpg" />'
         ret = {
                 "action":"output",
                 "type": "html",
@@ -337,9 +340,17 @@ def doubanfm(cmd = None, param = None):
         D = dbfm.Doubanfm()
         content = D.get_fav_chl()
         d = pyq(content)
-        p = d('.ch_wrapper')
+        p = d('.ch_title')
+        pattern = r'''>(.*?)</a>'''
+        title = re.findall(pattern, str(p))
+        print title
+
+        p = d('.ch_desc')
+        pattern = r'''<p class="ch_intro">(.*?)</p>'''
+        intro = re.findall(pattern, str(p))
+        print intro
+
         content = str(p)
-        print p
         return json.dumps({
             "action": "output",
             "type": "html",
