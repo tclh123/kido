@@ -35,15 +35,15 @@ def cmd():
         app_name = all_args.get('name')
         cmd = all_args.get('cmd')
         param = json.dumps(all_args.get('args'))
-        #try:
-        return eval(app_name + "( cmd = '" + str(cmd) + "' , param = '" + str(param) + "')")
-        #except Exception as e:
-        #    print e
-        #    return json.dumps({
-        #        "action":"output",
-        #        "type": "text",
-        #        "data": "No such command:" + app_name
-        #        })
+        try:
+            return eval(app_name + "( cmd = '" + str(cmd) + "' , param = '" + str(param) + "')")
+        except Exception as e:
+            print e
+            return json.dumps({
+                "action":"output",
+                "type": "text",
+                "data": "No such command:" + app_name
+                })
 
 @app.route("/callback", methods = ["GET", "POST"])
 def callback():
