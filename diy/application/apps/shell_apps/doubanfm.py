@@ -60,7 +60,7 @@ class Doubanfm:
         url = 'http://douban.fm/misc/captcha?size=m&id=' + self.code.strip('"')
         req = urllib2.Request(url)
         req.add_header("Referer", "http://douban.fm/")
-        with open('./application/static/verify_code.jpg', "w") as fi:
+        with open('./application/data/verify_code.jpg', "w") as fi:
             fi.write(urllib2.urlopen(req).read())
 
     def login(self):

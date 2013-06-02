@@ -1,0 +1,29 @@
+[{
+    scope: "read_user_feed read_user_album",
+    token_type: "bearer",
+    expires_in: 2594214,
+    refresh_token: "236129|0.d9EyJimdICHvbpuUoThbag5A63o2J6KV.428400353.1370110985497",
+    user: {
+        id: 428400353,
+        name: "余康乐.py",
+        avatar: [
+        {
+            type: "avatar",
+            url: "http://hdn.xnimg.cn/photos/hdn121/20121202/2355/h_head_Eux4_28bc0000117c1376.jpg"
+        },
+        {
+            type: "tiny",
+            url: "http://hdn.xnimg.cn/photos/hdn321/20121202/2355/tiny_8BQH_5d2e0002ce401375.jpg"
+        },
+        {
+            type: "main",
+            url: "http://hdn.xnimg.cn/photos/hdn121/20121202/2355/h_main_rxOm_28bc0000117c1376.jpg"
+        },
+        {
+            type: "large",
+            url: "http://hdn.xnimg.cn/photos/hdn121/20121202/2355/h_large_5SUQ_28bc0000117c1376.jpg"
+        }
+        ]
+    },
+    access_token: "236129|6.9fbea35afcf98debaa0be3bd11d5fe9c.2592000.1372705200-428400353"
+}]

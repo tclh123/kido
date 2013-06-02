@@ -10,8 +10,10 @@ if __name__ != "__main__":
     from application import app
     from flask import render_template
 
-@app.route("/")
+@app.route("/", methods = ["GET", "POST"])
 def index(name = None):
+    print request.method
+    print request.form
     return render_template('views/index.html')
 
 @app.route("/scripts/<path:name>")
@@ -26,4 +28,8 @@ def styles(name):
 @app.route("/static/<path:name>")
 def static(name):
     return open('./application/static/' + name, 'r').read()
+
+@app.route('/data/verify_code.jpg')
+def tmptmp():
+    return open('./application/data/verify_code.jpg', 'r').read()
 
