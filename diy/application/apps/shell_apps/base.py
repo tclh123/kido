@@ -385,8 +385,15 @@ def renren(cmd = None, param = None):
                 "v": "1.0",
                 "access_token": token[0].get("access_token"),
                 "method" : "feed.get",
-                "type":"",
+                "type":"10,11",
                 }
+        content = requests.get(url, data = data).content
+        return {
+                "action": "output",
+                "type": "text",
+                "data": content
+                }
+
 
     ret = {
             "action": "output",
