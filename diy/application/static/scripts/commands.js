@@ -179,9 +179,9 @@
             },
 
             // terminal style
-            'theam': {
-                func: function () { bd.className="theam"; },
-                syntax: 'theam'
+            'theme': {
+                func: function () { bd.className="theme"; },
+                syntax: 'theme'
             },
             'white': {
                 func: function () { color('white'); },
@@ -233,9 +233,13 @@
             output += '<br />';
 
             output += 'THEME<br />';
-            output += '  green - sets command line text to green<br />';
-            output += '  white - sets command line text to white<br />';
-            output += '  color - switch the color<br />';
+            output += '  sky - use the sky theme<br />';
+            output += '  dream - use the dream theme<br />';
+            output += '  childhood - use the childhood theme<br />';
+	    output += '  ubuntu - use the ubuntu theme<br />';
+	    output += '  forest - use the forest theme<br />';
+	    output += '  theme - use the theme theme<br />';
+
             output += '<br />';
 
             $output.html(output);

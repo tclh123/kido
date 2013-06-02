@@ -7,7 +7,7 @@ diy/application/.idea/*
 website/.idea/*
 
 reference/*
-
+diy/build/*
 # 绝对路径。。
 #diy/application/views/index.py
 
