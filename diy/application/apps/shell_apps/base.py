@@ -7,6 +7,7 @@ import urllib2
 import requests
 import application.apps.shell_apps.doubanfm as dbfm
 from pyquery import PyQuery as pyq
+import re
 
 from application.apps.shell_apps.weibo_ import APIClient
 APP_KEY = '185639834'
@@ -33,7 +34,14 @@ def cmd():
         app_name = all_args.get('name')
         cmd = all_args.get('cmd')
         param = json.dumps(all_args.get('args'))
-        return eval(app_name + "( cmd = '" + str(cmd) + "' , param = '" + str(param) + "')")
+        try:
+            return eval(app_name + "( cmd = '" + str(cmd) + "' , param = '" + str(param) + "')")
+        except:
+            return json.dumps({
+                "action":"output",
+                "type": "text",
+                "data": "No such command:" + app_name
+                })
 
 @app.route("/callback", methods = ["GET", "POST"])
 def callback():
@@ -139,14 +147,14 @@ def weibo(cmd = None, param = None):
 
 
 
-    url = ('https://api.weibo.com/oauth2/authorize?client_id='+
-            '1220535963' +
-            '&response_type=code&redirect_uri=' +
-            'http://atupal.org')
+    #url = ('https://api.weibo.com/oauth2/authorize?client_id='+
+    #        '1220535963' +
+    #        '&response_type=code&redirect_uri=' +
+    #        'http://atupal.org')
     ret = {
-            "action": "needauth",
+            "action": "output",
             "type": "text",
-            "data": url,
+            "data": "no such command",
             }
     return  json.dumps(ret)
 
@@ -156,7 +164,7 @@ def doubanfm(cmd = None, param = None):
         chanel =  (
                 "explain: " + "</br>"
                 + tab + "调用豆瓣fm播放音乐" + "</br>"
-                "args1:" + "</br>"
+                "chanel:" + "</br>"
                 + tab + "选择一个频道" + "</br>"
                 +  "fm频道:" + "</br>"
                 + tab + "channel=0 私人兆赫  type=s" + "</br>"
@@ -189,10 +197,20 @@ def doubanfm(cmd = None, param = None):
                 + tab + "获取登录的验证码" + "</br>"
                 + "login2:" + "</br>"
                 + tab + "登录豆瓣fm，3个参数依次为用户名，密码，验证码" + "</br>"
-                + "get_list" + "</br>"
+                + "likes" + "</br>"
                 + tab + "获取收藏的歌曲" + "</br>"
                 + "logout:" + "</br>"
                 + tab + "登出" + "</br>"
+                + "favoritefm" + "</br>"
+                + tab + "获取用户favicon的赫兹" + "</br>"
+                + "playlikes" + "</br>"
+                + tab + "播放用户的红心歌曲" + "</br>"
+                + "next" + "</br>"
+                + tab + "播放当前fm的下一首歌曲" + "</br>"
+                + "play"  + "</br>"
+                + tab + "播放"  + "</br>"
+                + "stop" + "</br>"
+                + tab + "暂停播放" + "</br>"
         )
         ret = {
                 "action": "output",
@@ -201,7 +219,7 @@ def doubanfm(cmd = None, param = None):
                 }
         return json.dumps(ret)
     #elif cmd.isdigit():
-    elif cmd == "chanel":
+    elif cmd == "channel":
         #url = 'http://douban.fm/j/mine/playlist?channel=' + cmd
         param = json.loads(param)
         url = 'http://douban.fm/j/mine/playlist?channel=' + param[0]
@@ -219,8 +237,11 @@ def doubanfm(cmd = None, param = None):
 
         ret = {
                 "action": "output",
-                "type": "html",
-                "data":content
+                "type": "json",
+                "data":{
+                    "src": req.get('song')[0].get('url'),
+                    "title": "正在播放当前选择赫兹:" + req.get('song')[0].get('title'),
+                    }
                 }
         return json.dumps(ret)
     elif cmd == "login1":
@@ -259,42 +280,70 @@ def doubanfm(cmd = None, param = None):
             "data": "logout success",
             })
 
-    elif cmd == 'get_list':
+    elif cmd == 'likes':
         D = dbfm.Doubanfm()
         content = D.get_list()
         d = pyq(content)
         p = d('.song_info')
         content = str(p)
+        img_pattern = r'''img src="http://img3.douban.com/spic/s([0-9]*).jpg"'''
+        tit_pattern = r'''class="song_title">(.*)</p>'''
+        img = re.findall(img_pattern, str(p))
+        tit = re.findall(tit_pattern, str(p))
+        content = ""
+        for i in xrange(min(len(img), len(tit))):
+            content += '<img src="http://img3.douban.com/spic/s'+img[i]+'.jpg" />' + "</br>" + tit[i] + "</br>"
+            pass
         return json.dumps({
             "action": "output",
             "type": "html",
             "data": content,
             })
-
-    elif cmd == 'get_fav_src':
+    elif cmd == 'favoritefm':
         D = dbfm.Doubanfm()
-        content = D.get_fav_src()
+        content = D.get_fav_chl()
+        d = pyq(content)
+        p = d('.ch_wrapper')
+        content = str(p)
+        print p
         return json.dumps({
             "action": "output",
             "type": "html",
             "data": content,
+            })
+    elif cmd == 'playlikes':
+        D = dbfm.Doubanfm()
+        content = D.get_fav_src()
+        print content
+        content = json.loads(content)
+        return json.dumps({
+            "action": "output",
+            "type": "json",
+            "data": {
+                "src": content.get('song')[0].get('url'),
+                "tittle": "now playing favorite songs:" + content.get('song')[0].get('title'),
+                },
             })
     elif cmd == 'next':
         D = dbfm.Doubanfm()
-        content = D.get_fav_src()
+        content = D.get_next()
         return json.dumps({
             "action": "output",
             "type": "json",
             "data": {
                 'src': content[0],
-                'title': content[1],
+                'title': "now playing:" + content[1],
                 }
             })
     elif cmd == "":
         pass
 
-    else:
-        return "sd"
+    ret = {
+            "action": "output",
+            "type": "text",
+            "data": "no such command",
+            }
+    return  json.dumps(ret)
 
 
 def renren(cmd = None, param = None):
@@ -309,3 +358,10 @@ def renren(cmd = None, param = None):
                 "method" : "feed.get",
                 "type":"",
                 }
+
+    ret = {
+            "action": "output",
+            "type": "text",
+            "data": "no such command",
+            }
+    return  json.dumps(ret)

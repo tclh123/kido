@@ -40,6 +40,11 @@ class Doubanfm:
         tit = content.get('song')[0].get('title')
         return (src, tit)
 
+    def get_fav_chl(self):
+        url = 'http://douban.fm/mine?type=faved_chl'
+        content = urllib2.urlopen(url).read()
+        return content
+
 
     def new_captcha(self):
         url = 'http://douban.fm/j/new_captcha'
