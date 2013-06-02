@@ -1,6 +1,6 @@
-import requests
 import urllib2
 import cookielib
+import json
 
 
 class Doubanfm:
@@ -31,6 +31,14 @@ class Doubanfm:
         url = 'http://douban.fm/j/mine/playlist?type=n&channel=-3&from=mainsite'
         content = urllib2.urlopen(url).read()
         return content
+
+    def get_next(self):
+        url = 'http://douban.fm/j/mine/playlist?type=p&sid=1895938&pt=0.0&channel=1002158&pb=64&from=mainsite&r=48b6706c48'
+        content = urllib2.urlopen(url)
+        content = json.load(content)
+        src = content.get('song')[0].get('url')
+        tit = content.get('song')[0].get('title')
+        return (src, tit)
 
 
     def new_captcha(self):

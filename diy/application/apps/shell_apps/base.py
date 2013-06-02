@@ -200,8 +200,11 @@ def doubanfm(cmd = None, param = None):
                 "data":chanel
                 }
         return json.dumps(ret)
-    elif cmd.isdigit():
-        url = 'http://douban.fm/j/mine/playlist?channel=' + cmd
+    #elif cmd.isdigit():
+    elif cmd == "chanel":
+        #url = 'http://douban.fm/j/mine/playlist?channel=' + cmd
+        param = json.loads(param)
+        url = 'http://douban.fm/j/mine/playlist?channel=' + param[0]
         req = requests.get(url).content
         req = json.loads(req)
         content = req.get('song')[0].get('url')
@@ -276,6 +279,19 @@ def doubanfm(cmd = None, param = None):
             "type": "html",
             "data": content,
             })
+    elif cmd == 'next':
+        D = dbfm.Doubanfm()
+        content = D.get_fav_src()
+        return json.dumps({
+            "action": "output",
+            "type": "json",
+            "data": {
+                'src': content[0],
+                'title': content[1],
+                }
+            })
+    elif cmd == "":
+        pass
 
     else:
         return "sd"
