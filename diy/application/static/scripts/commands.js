@@ -56,6 +56,13 @@
                         } else if(data.type == 'text') {     // 暂时没区别...
                             output = data.data;
                             $output.html(output);
+                        } else if(data.type == 'json') {
+                            var jsondata = data.data;
+                            if(jsondata.src && jsondata.title) {    // douban fm
+                                _play(jsondata.src);
+                                output = jsondata.title;
+                                $output.html(output);
+                            }
                         }
                     }
                     // TODO: 如果后端找不到相应命令，输出 invalid command

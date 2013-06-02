@@ -175,20 +175,16 @@ def weibo(cmd = None, param = None):
                 }
         return  json.dumps(ret)
 
-<<<<<<< HEAD
-
 
 
     #url = ('https://api.weibo.com/oauth2/authorize?client_id='+
     #        '1220535963' +
     #        '&response_type=code&redirect_uri=' +
     #        'http://atupal.org')
-=======
     url = ('https://api.weibo.com/oauth2/authorize?client_id='+
             '1220535963' +
             '&response_type=code&redirect_uri=' +
             'http://atupal.org')
->>>>>>> 92362eca592e72ab612e835227a1749a170be1ac
     ret = {
             "action": "output",
             "type": "text",
