@@ -9,6 +9,6 @@ website/.idea/*
 reference/*
 
 # 绝对路径。。
-diy/application/views/index.py
+#diy/application/views/index.py
 
 *~
