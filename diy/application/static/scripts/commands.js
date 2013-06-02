@@ -61,8 +61,10 @@
                     // TODO: 如果后端找不到相应命令，输出 invalid command
 
                     // TODO: Auth
-//                    else if(data.action == 'needauth') {
-//                        if(data.type == 'json') {
+                    else if(data.action == 'needauth') {
+                        if(data.type == 'text') {
+                            console.log(data.data);
+                            window.open(data.data);
 //                            var jsondata = data.data;
 //                            // TODO: 打开 jsondata.url 小窗口，进行授权
 //                            var token = 'token';
@@ -82,9 +84,9 @@
 //                                    }
 //                                }
 //                            });
-//                        }
-//
-//                    }
+                        }
+
+                    }
 
                     callback(); // 新行，及 focus
                 });
