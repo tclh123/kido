@@ -179,9 +179,9 @@
             },
 
             // terminal style
-            'theam': {
-                func: function () { bd.className="theam"; },
-                syntax: 'theam'
+            'theme': {
+                func: function () { bd.className="theme"; },
+                syntax: 'theme'
             },
             'white': {
                 func: function () { color('white'); },
