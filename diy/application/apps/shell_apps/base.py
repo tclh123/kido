@@ -8,6 +8,11 @@ import requests
 import application.apps.shell_apps.doubanfm as dbfm
 from pyquery import PyQuery as pyq
 
+from application.apps.shell_apps.weibo_ import APIClient
+APP_KEY = '185639834'
+APP_SECRET = '8c9aa1623e8126dd5eec680f930bda8b'
+CALLBACK_URL = 'http://127.0.0.1:8888/callback'
+
 import sys
 reload(sys)
 sys.setdefaultencoding("utf-8")
@@ -32,6 +37,9 @@ def cmd():
 
 @app.route("/callback", methods = ["GET", "POST"])
 def callback():
+    print session
+    print request.form
+    print request.method
     return redirect("/")
 #    return "callback"
 
@@ -118,6 +126,17 @@ def weibo(cmd = None, param = None):
                     "data": "success"
                     }
             return json.dumps(ret)
+    elif cmd == 'login':
+        client = APIClient(app_key=APP_KEY, app_secret=APP_SECRET, redirect_uri=CALLBACK_URL)
+        url = client.get_authorize_url()
+        ret = {
+                "action": "needauth",
+                "type": "text",
+                "data": url,
+                }
+        return  json.dumps(ret)
+
+
 
 
     url = ('https://api.weibo.com/oauth2/authorize?client_id='+
@@ -274,5 +293,3 @@ def renren(cmd = None, param = None):
                 "method" : "feed.get",
                 "type":"",
                 }
-
-
