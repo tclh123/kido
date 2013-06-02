@@ -23,7 +23,26 @@
 
             //////////////
             // 前端命令
+            var done = false;
             var command = frontCmd[commandData.name] || {};
+            if(commandData.name == 'doubanfm') {
+                if(commandData.cmd == 'play') {
+                    done = true;
+                    _resume();
+                    output = 'fm play(resume)...';
+                    $output.html(output);
+                } else if(commandData.cmd == 'stop') {
+                    done = true;
+                    _pause();
+                    output = 'fm stop(pause)...';
+                    $output.html(output);
+                }
+            }
+            if(done) {
+                callback();
+                return;
+            }
+
             command.requiredArgs = command.requiredArgs == null ? 0 : command.requiredArgs;
             command.optionalArgs = command.optionalArgs == null ? 0 : command.optionalArgs;
 
@@ -61,6 +80,11 @@
                             if(jsondata.src && jsondata.title) {    // douban fm
                                 _play(jsondata.src);
                                 output = jsondata.title;
+                                $output.html(output);
+                            }
+                            if(jsondata.src && jsondata.tittle) {    // douban fm
+                                _play(jsondata.src);
+                                output = jsondata.tittle;
                                 $output.html(output);
                             }
                         }
