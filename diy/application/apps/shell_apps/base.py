@@ -35,14 +35,15 @@ def cmd():
         app_name = all_args.get('name')
         cmd = all_args.get('cmd')
         param = json.dumps(all_args.get('args'))
-        try:
-            return eval(app_name + "( cmd = '" + str(cmd) + "' , param = '" + str(param) + "')")
-        except:
-            return json.dumps({
-                "action":"output",
-                "type": "text",
-                "data": "No such command:" + app_name
-                })
+        #try:
+        return eval(app_name + "( cmd = '" + str(cmd) + "' , param = '" + str(param) + "')")
+        #except Exception as e:
+        #    print e
+        #    return json.dumps({
+        #        "action":"output",
+        #        "type": "text",
+        #        "data": "No such command:" + app_name
+        #        })
 
 @app.route("/callback", methods = ["GET", "POST"])
 def callback():
@@ -54,6 +55,9 @@ def callback():
 
     # TODO: ACCESS_TOKEN 存到文件
     print ACCESS_TOKEN
+    with open("./application/data/weibo_token.txt", 'w') as fi:
+        fi.write(ACCESS_TOKEN)
+
 
 #    test
 #    print client.statuses.user_timeline.get()
@@ -100,54 +104,36 @@ def weibo(cmd = None, param = None):
                 "data": json.dumps(ret),
                 }
         return json.dumps(ret)
+    elif cmd == "getweibo":
+        with open("./application/data/weibo_token.json", 'r') as fi:
+            param = json.loads(param)
+            page = "1"
+            count = "20"
+            if len(param) == 1:
+                page = param[0]
+            elif len(param) == 2:
+                page = param[0]
+                count = param[1]
 
-#    elif cmd == 'timeline':
-#        client = APIClient(app_key=APP_KEY, app_secret=APP_SECRET, redirect_uri=CALLBACK_URL)
-#        ret = client.statuses.home_timeline.get()
-
-
-    elif cmd == "getweibo" or cmd == "timeline":
-        #TODO:
-
-#        with open("./application/data/weibo_token.json", 'r') as fi:
-#        client = APIClient(app_key=APP_KEY, app_secret=APP_SECRET, redirect_uri=CALLBACK_URL)
-#        client.statuses.update.post(status=u'test plain weibo 2')
-
-        if ACCESS_TOKEN is None or ACCESS_TOKEN == '':
+            token = json.load(fi)
+            url = 'https://api.weibo.com/2/statuses/friends_timeline.json'
+            access_token = token[0]['access_token']
+            data = "?access_token=" + access_token
+            data += "&page=" + page
+            data += "&count=" + count
+            url += data
+            ret = urllib2.urlopen(url)
+            ret = json.load(ret)
+            content = "<ul>"
+            for w in ret.get('statuses'):
+                content += "<li>"  + w.get('user').get('screen_name') + "</li>"  + "<li>" +w.get('text') + "</li>" + "</br>"
+            content += "</ul>"
             ret = {}
+
             ret['action'] = 'output'
-            ret['type'] = 'text'
-            ret['data'] = 'error: please login first. CALL weibo login'
+            ret['type'] = 'html'
+            ret['data'] = content
             return json.dumps(ret)
-
-        param = json.loads(param)
-        page = "1"
-        count = "20"
-        if len(param) == 1:
-            page = param[0]
-        elif len(param) == 2:
-            page = param[0]
-            count = param[1]
-
-#        token = json.load(fi)
-        url = 'https://api.weibo.com/2/statuses/friends_timeline.json'
-#        access_token = token[0]['access_token']
-        data = "?access_token=" + ACCESS_TOKEN
-        data += "&page=" + page
-        data += "&count=" + count
-        url += data
-        ret = urllib2.urlopen(url)
-        ret = json.load(ret)
-        content = "<ul>"
-        for w in ret.get('statuses'):
-            content += "<li>"  + w.get('user').get('screen_name') + "</li>"  + "<li>" +w.get('text') + "</li>" + "</br>"
-        content += "</ul>"
-
-        ret = {}
-        ret['action'] = 'output'
-        ret['type'] = 'html'
-        ret['data'] = content
-        return json.dumps(ret)
     elif cmd == "sendweibo":
         with open("./application/data/weibo_token.json", 'r') as fi:
             token = json.load(fi)
@@ -164,7 +150,6 @@ def weibo(cmd = None, param = None):
                     "data": "success"
                     }
             return json.dumps(ret)
-
     elif cmd == 'login':
         client = APIClient(app_key=APP_KEY, app_secret=APP_SECRET, redirect_uri=CALLBACK_URL)
         url = client.get_authorize_url()
@@ -336,6 +321,9 @@ def doubanfm(cmd = None, param = None):
         pattern = r'''<p class="ch_intro">(.*?)</p>'''
         intro = re.findall(pattern, str(p))
         print intro
+
+        p = d('.action')
+        print p
 
         content = str(p)
         return json.dumps({

@@ -79,6 +79,7 @@ class Doubanfm:
         self.result = urllib2.urlopen(url, data).read()
         self.cookies.save("./application/data/doubanfm.cookie")
         print self.result
+
     def logout(self):
         with open('./application/data/doubanfm.cookie', 'w') as fi:
             fi.write('')
