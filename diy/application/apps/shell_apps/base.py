@@ -10,22 +10,26 @@ from pyquery import PyQuery as pyq
 import re
 
 from application.apps.shell_apps.weibo_ import APIClient
-APP_KEY = '185639834'
-APP_SECRET = '8c9aa1623e8126dd5eec680f930bda8b'
-CALLBACK_URL = 'http://127.0.0.1:8888/callback'
-ACCESS_TOKEN = ''
 
 import sys
 reload(sys)
 sys.setdefaultencoding("utf-8")
 
+APP_KEY = '185639834'
+APP_SECRET = '8c9aa1623e8126dd5eec680f930bda8b'
+CALLBACK_URL = 'http://127.0.0.1:8888/callback'
+ACCESS_TOKEN = ''
+
+safe_list = ['ls', 'weibo', 'renren', 'doubanfm']
+
 @app.route("/test", methods = ["GET", "POST"])
 def test():
     return "test"
 
-@app.route("/post", methods = ["POST"])
+@app.route("/post", methods = ["POST", "GET"])
 def cmd():
 #    value = session['key']
+    safe_dict = dict([ (k, globals().get(k, None)) for k in safe_list ])
     if request.method == 'GET':
         ret = {"result":"invalid method: get!"}
         return json.dumps(ret)
@@ -33,10 +37,12 @@ def cmd():
         all_args = request.form.get('json')
         all_args = json.loads(all_args)
         app_name = all_args.get('name')
+        if app_name: app_name = app_name.strip()
         cmd = all_args.get('cmd')
+        if cmd: cmd = cmd.strip()
         param = json.dumps(all_args.get('args'))
         try:
-            return eval(app_name + "( cmd = '" + str(cmd) + "' , param = '" + str(param) + "')")
+            return eval(app_name + "( cmd = '" + str(cmd) + "' , param = '" + str(param) + "')", {"__builtins__":None}, safe_dict)
         except Exception as e:
             print e
             return json.dumps({
@@ -69,12 +75,18 @@ def callback():
 
 ###############
 
+def is_correct_name(s):
+    patern = r'''[0-9a-zA-Z_]{1,100}'''
+    ret = re.findall(patern, s)
+    return 0 if ret == [] or len(ret[0]) != len(s) else 1
+
 tab = "&nbsp;"  * 4
 def ls(cmd = None, param = None):
     content = (
             "apps:" + "</br>"
             + tab + "weibo" + "</br>"
             + tab + "doubanfm" + "</br>"
+            + tab + "renren"  + "</br>"
             "..."
             )
     ret = {}
@@ -324,17 +336,18 @@ def doubanfm(cmd = None, param = None):
         p = d('.ch_title')
         pattern = r'''>(.*?)</a>'''
         title = re.findall(pattern, str(p))
-        print title
 
         p = d('.ch_desc')
         pattern = r'''<p class="ch_intro">(.*?)</p>'''
         intro = re.findall(pattern, str(p))
-        print intro
 
         p = d('.action')
-        print p
+        pattern = r'''<div class="action" cid="([0-9]*)">'''
+        cid = re.findall(pattern, str(p))
 
-        content = str(p)
+        content = ""
+        for i in xrange(len(p)):
+            content += "</br>标题：" + title[i] + "</br>" +  "介绍:" + intro[i] + "</br>" +  "频道号码：" + cid[i] + "</br>"
         return json.dumps({
             "action": "output",
             "type": "html",
@@ -385,8 +398,15 @@ def renren(cmd = None, param = None):
                 "v": "1.0",
                 "access_token": token[0].get("access_token"),
                 "method" : "feed.get",
-                "type":"",
+                "type":"10,11",
                 }
+        content = requests.get(url, data = data).content
+        return {
+                "action": "output",
+                "type": "text",
+                "data": content
+                }
+
 
     ret = {
             "action": "output",
