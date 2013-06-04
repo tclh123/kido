@@ -10,6 +10,9 @@
         window.kido = {};
 
     kido.commands = function ($container, http, context) {
+
+        var playing = false;
+
         this.run = function ($output, commandText, callback) {
             var output = '';
             var immediateCallback = true;
@@ -27,11 +30,15 @@
             var command = frontCmd[commandData.name] || {};
             if(commandData.name == 'doubanfm') {
                 if(commandData.cmd == 'play') {
+                    playing = true;
+
                     done = true;
                     _resume();
                     output = 'fm play(resume)...';
                     $output.html(output);
                 } else if(commandData.cmd == 'stop') {
+                    playing = false;
+
                     done = true;
                     _pause();
                     output = 'fm stop(pause)...';
@@ -78,11 +85,15 @@
                         } else if(data.type == 'json') {
                             var jsondata = data.data;
                             if(jsondata.src && jsondata.title) {    // douban fm
+                                playing = true;
+
                                 _play(jsondata.src);
                                 output = jsondata.title;
                                 $output.html(output);
                             }
                             if(jsondata.src && jsondata.tittle) {    // douban fm
+                                playing = true;
+
                                 _play(jsondata.src);
                                 output = jsondata.tittle;
                                 $output.html(output);
@@ -130,6 +141,47 @@
             }
         };
 
+        // doubanfm 自动下一首
+        // 因为是后台播放，下一首时自动向前端输出有点weird..
+        // TODO: too ugly... need refactor
+        $('#music').bind('ended', function (e) {
+            if (playing) {
+                var $output = $('<div class="output"></div>');
+                $container.append($output);
+                var output = '';
+
+                http.post(context.urlpost, { json: JSON.stringify({
+                        name : 'doubanfm',
+                        cmd : 'next',
+                        args : []
+                    })},
+                    function(data) {
+                    data = JSON.parse(data);
+                    if(data.action == 'output') {
+                        if(data.type == 'html') {
+                            output = data.data;
+                            $output.html(output);
+                        } else if(data.type == 'text') {     // 暂时没区别...
+                            output = data.data;
+                            $output.html(output);
+                        } else if(data.type == 'json') {
+                            var jsondata = data.data;
+                            if(jsondata.src && jsondata.title) {    // douban fm
+                                _play(jsondata.src);
+                                output = jsondata.title;
+                                $output.html(output);
+                            }
+                            if(jsondata.src && jsondata.tittle) {    // douban fm
+                                _play(jsondata.src);
+                                output = jsondata.tittle;
+                                $output.html(output);
+                            }
+                        }
+                    }
+                });
+            }
+        });
+
         // 弹出授权弹层：
         function authLoad(){
             context.wbapi.AuthDialog.show({
@@ -158,24 +210,6 @@
             'ver': {
                 func: function ($output) { $output.html('kido version "alpha 1.0"'); },
                 syntax: 'ver'
-            },
-
-            // music
-            'play': {
-                func: play,
-                syntax: 'play song.mp3'
-            },
-            'pause': {
-                func: pause,
-                syntax: 'pause (pauses the playing song)'
-            },
-//            'queue': {
-//                func: queue,
-//                syntax: 'queue music.mp3 OR queue'
-//            },
-            'next': {
-                func: next,
-                syntax: 'next (goes to the next song in your queue)'
             },
 
             // terminal style
@@ -247,20 +281,12 @@
         function clear() {
             $container.empty();
         }
-        function play() {
-            _play('http://mr5.douban.com/201306020131/c2b26b2f2a72b258dec67567770dc6b8/view/song/small/p367521.mp3');
-        }
-        function pause() {
-
-        }
-        function next() {
-
-        }
         function color(theam) {
             //$('body').toggleClass('green', theam == 'green');
 	    $('body').className=theam;
         }
 
+        // internal
         function _play(src) {
             if ($('#music') && $('#music')[0] && $('#music')[0].play) {
                 $('#music')[0].innerHTML = '<source src="' + src + '" type="audio/mpeg" />';

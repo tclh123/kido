@@ -1,8 +1,8 @@
 
 
-##Functional
+##Function
 
-1. doubanfm 自动下一首。。。
+1. <del>doubanfm 自动下一首。。。</del>
 
 ##Long-term
 

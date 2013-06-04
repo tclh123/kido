@@ -12,13 +12,9 @@
 
     kido.terminal = function ($container, http, context) {
         var $currentConsoleLine;
-//        var currentPath = '';
-//        var currentFolder = '';
         var commandHistory = [];
         var commandCount = 0;
-//        var firstname = '';
-//        var loggedIn = false;
-//        var currentId;
+
 //        var searchTerm = '';
 //        var searchIndex = 0;
 //        var matches = [];
