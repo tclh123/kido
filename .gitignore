@@ -12,3 +12,10 @@ diy/build/*
 #diy/application/views/index.py
 
 *~
+
+# 个人信息 TODO
+diy/application/data/code.txt
+diy/application/data/doubanfm.cookie
+diy/application/data/verify_code.jpg
+diy/application/data/weibo_token.txt
+
