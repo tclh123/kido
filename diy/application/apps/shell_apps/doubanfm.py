@@ -87,8 +87,8 @@ class Doubanfm:
 
 if __name__ == "__main__":
     D = Doubanfm()
-    D.username = "atupal@foxmail.com"
-    D.passwd = "LKYs4690102"
+    D.username = "xxx"
+    D.passwd = "xxx"
     #D.new_captcha()
     #D.getimg()
     #verify_code = raw_input()
